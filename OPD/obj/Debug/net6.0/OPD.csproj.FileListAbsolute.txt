@@ -48,3 +48,4 @@ C:\Users\normc\source\repos\OPD\OPD\obj\Debug\net6.0\refint\OPD.dll
 C:\Users\normc\source\repos\OPD\OPD\obj\Debug\net6.0\OPD.pdb
 C:\Users\normc\source\repos\OPD\OPD\obj\Debug\net6.0\OPD.genruntimeconfig.cache
 C:\Users\normc\source\repos\OPD\OPD\obj\Debug\net6.0\ref\OPD.dll
+C:\Users\normc\source\repos\OPD\OPD\obj\Debug\net6.0\OPD.sourcelink.json

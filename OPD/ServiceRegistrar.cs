@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 using OPD.DataBase;
+using OPD.DataBase.Products;
 using OPD.DataBase.Users;
 using OPD.Security.JwtLogic;
 
@@ -15,6 +16,9 @@ namespace OPD
 
             serviceCollection.AddDbContext<ApplicationDbContext>();
             serviceCollection.AddScoped<UserDbContext>();
+            serviceCollection.AddScoped<ProductDbContext>();
+            serviceCollection.AddScoped<UserBasketDbContext>();
+            serviceCollection.AddScoped<ProductBasketSerivce>();
             serviceCollection.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",

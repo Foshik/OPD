@@ -1,17 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using OPD.DataBase.Product;
+using System.ComponentModel.DataAnnotations.Schema;
+using OPD.DataBase.Products;
 
 namespace OPD.DataBase.Users
 {
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public Roles Role { get; set; }
-        public UserBasket UserBasket{ get; set; }
+        public UserBasket UserBasket { get; set; }
         public string Password { get; set; }
 
         public User(string firstName, string lastName, string email, string password)
@@ -20,7 +22,10 @@ namespace OPD.DataBase.Users
             LastName = lastName;
             Email = email;
             Password = password;
-            UserBasket = new();
+            UserBasket = new UserBasket()
+            {
+                UserId = Id
+            };
             Role = Roles.User;
         }
 

@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OPD.DataBase.Products;
 using OPD.Security.JwtLogic;
 using OPD.ViewModel.UsersViewModels;
 
@@ -22,14 +23,12 @@ namespace OPD.DataBase.Users
             {
                 return "The user with this Email has already been registered";
             }
-            await _dbContext.Users.AddAsync(
-                new User(
-                    model.FirstName,
-                    model.LastName,
-                    model.Email,
-                    GeneratePasswordHash(model.Password)
-                    )
-                );
+            var user = new User(
+                model.FirstName,
+                model.LastName,
+                model.Email,
+                GeneratePasswordHash(model.Password));
+            await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             return "Register is success";
         }
@@ -63,8 +62,9 @@ namespace OPD.DataBase.Users
 
         public async Task<User> GetUserById(int id)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
-        }
+            return await _dbContext.Users
+                .Include(u => u.UserBasket)
+                .FirstOrDefaultAsync(x => x.Id == id);        }
 
         public async Task<User> GetUserFromToken(string token)
         {
@@ -83,7 +83,8 @@ namespace OPD.DataBase.Users
             SecurityToken securityToken;
             ClaimsPrincipal principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             string userId = principal.FindFirst(ClaimTypes.NameIdentifier).Value;
-            return await GetUserById(int.Parse(userId));
+            var user = await GetUserById(int.Parse(userId));
+            return user;
         }
 
         public async Task UserDelete(int id)
